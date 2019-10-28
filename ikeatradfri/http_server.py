@@ -1,4 +1,5 @@
 from aiohttp import web
+import aiohttp_cors
 import asyncio
 import signal
 import logging
@@ -20,10 +21,20 @@ async def start(hostConfig):
     loop = asyncio.get_event_loop()
 
     app = web.Application()
+    # Configure default CORS settings.
+    cors = aiohttp_cors.setup(app, defaults={
+        "*": aiohttp_cors.ResourceOptions(
+            allow_credentials=True,
+            expose_headers="*",
+            allow_headers="*",
+        )
+    })
     try:
         app["api"], app["gateway"], APP_FACTORY = await connect_to_gateway(hostConfig)
 
         app.add_routes(routes)
+        for route in list(app.router.routes()):
+            cors.add(route)
 
         runner = web.AppRunner(app)
         await runner.setup()

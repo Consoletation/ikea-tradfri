@@ -1,5 +1,7 @@
 from aiohttp import web
-from aiohttp_cors import ResourceOptions, CorsViewMixin
+
+from aiohttp_cors import CorsConfig, APP_CONFIG_KEY
+from aiohttp_cors import ResourceOptions, CorsViewMixin, custom_cors
 
 try:
     from . import devices as Devices
