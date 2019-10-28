@@ -53,7 +53,10 @@ class DeviceView(web.View):
 
     async def put(self):
         if self.request.body_exists:
-            return web.json_response(await Server_Commands.serverCommand(self.request))
+            try:
+                return web.json_response(await Server_Commands.serverCommand(self.request))
+            except TypeError:  # Can't serialize, bypass for now
+                return web.json_response(None)
         else:
             return web.json_response(
                 Server_Commands.return_object(
