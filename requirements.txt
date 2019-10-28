@@ -1,5 +1,6 @@
 aiocoap==0.4a1
 aiohttp==4.0.0a0
+aiohttp_cors==0.7.0
 appdirs==1.4.3
 async-timeout==3.0.1
 attrs==19.1.0

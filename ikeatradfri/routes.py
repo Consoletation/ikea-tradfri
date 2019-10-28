@@ -1,4 +1,5 @@
 from aiohttp import web
+from aiohttp_cors import ResourceOptions, CorsViewMixin
 
 try:
     from . import devices as Devices
@@ -40,7 +41,15 @@ async def listdevices(request):
 
 
 @routes.view("/devices/{id}")
-class DeviceView(web.View):
+class DeviceView(web.View, CorsViewMixin):
+    cors_config = {
+        "*": ResourceOptions(
+            allow_credentials=True,
+            expose_headers="*",
+            allow_headers="*",
+        )
+    }
+
     async def get(self):
         device = await Devices.get_device(
             self.request.app["api"],
